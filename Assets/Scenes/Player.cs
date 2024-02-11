@@ -34,14 +34,7 @@ public class Player : NetworkBehaviour
 
         if (context.performed)
         {
-            //rbPlayer.MovePosition(context.ReadValue<Vector2>());
-            //rbPlayer.AddForce(context.ReadValue<Vector2>() * 5f, ForceMode.Acceleration);
-
-            Vector3  vect = context.ReadValue<Vector3>();
-
-            //Vector3 moveDirection = new Vector3(vect.x, 0, vect.z).normalized;
-            //transform.Translate(speed * Time.deltaTime * vect);
-            rbPlayer.AddForce(vect * 5f, ForceMode.Impulse);
+            rbPlayer.AddForce(context.ReadValue<Vector3>() * 5f, ForceMode.Impulse);
         }
     }
 }
