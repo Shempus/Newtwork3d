@@ -10,6 +10,7 @@ public class Player : NetworkBehaviour
     private float speed = 0.5f;
 
 
+
     private void Awake()
     {
         rbPlayer = GetComponent<Rigidbody>();
