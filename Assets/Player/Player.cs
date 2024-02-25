@@ -7,7 +7,7 @@ public class Player : NetworkBehaviour
     private Rigidbody rbPlayer;
 
     [SerializeField]
-    private float speed = 0.5f;
+    private float speed = 30f;
 
 
 
@@ -32,7 +32,7 @@ public class Player : NetworkBehaviour
 
         if (context.performed)
         {
-            moveServerRPC(context.ReadValue<Vector3>() * 5f, ForceMode.Impulse);
+            moveServerRPC(context.ReadValue<Vector3>() * speed, ForceMode.Impulse);
         }
     }
 

@@ -1,9 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using Unity.Netcode;
-//using Mirror;
 
 
 public class CameraController : NetworkBehaviour
@@ -13,10 +9,10 @@ public class CameraController : NetworkBehaviour
     public bool cameraActive;
 
     public override void OnNetworkSpawn()
-    { // This is basically a Start method
+    { 
         cameraHolder.SetActive(IsOwner);
         cameraActive = IsOwner;
-        base.OnNetworkSpawn(); // Not sure if this is needed though, but good to have it.
+        base.OnNetworkSpawn();
     }
 
     public void Update()
