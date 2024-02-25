@@ -9,7 +9,7 @@ public class Player : NetworkBehaviour
     [SerializeField]
     private float speed = 30f;
 
-
+    
 
     private void Awake()
     {
