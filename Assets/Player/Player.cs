@@ -9,6 +9,7 @@ public class Player : NetworkBehaviour
     [SerializeField]
     private float speed = 30f;
 
+    bool canJump = true;
     
 
     private void Awake()
@@ -20,8 +21,9 @@ public class Player : NetworkBehaviour
     {
         if(!IsOwner) return;
 
-        if (context.performed)
+        if (context.performed && canJump)
         {
+            canJump = false;
             moveServerRPC(Vector3.up * 5f, ForceMode.Impulse);
         }
     }
@@ -33,6 +35,14 @@ public class Player : NetworkBehaviour
         if (context.performed)
         {
             moveServerRPC(context.ReadValue<Vector3>() * speed, ForceMode.Impulse);
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Ground"))
+        {
+            canJump = true;
         }
     }
 
