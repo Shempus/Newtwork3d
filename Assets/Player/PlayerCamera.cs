@@ -9,10 +9,12 @@ public class PlayerCamera : MonoBehaviour
     public float sensX;
     public float sensY;
 
-    public Transform orientation;
-    
     float xRotation;
     float yRotation;
+
+    [SerializeField]
+    public Transform orientation;
+    
 
 
     // Start is called before the first frame update
@@ -31,13 +33,13 @@ public class PlayerCamera : MonoBehaviour
         float mouseX = Input.GetAxisRaw("Mouse X") * Time.deltaTime * sensX;
         float mouseY = Input.GetAxisRaw("Mouse Y") * Time.deltaTime * sensY;
 
-        yRotation += mouseX;
-        xRotation -= mouseY;
+        yRotation += mouseY;
+        xRotation -= mouseX;
 
-        xRotation = Mathf.Clamp(xRotation, -90f, 90f);
+        yRotation = Mathf.Clamp(yRotation, -90f, 90f);
 
-        transform.rotation = Quaternion.Euler(xRotation, yRotation, 0);
-        orientation.rotation = Quaternion.Euler(0, yRotation, 0);
+        transform.rotation = Quaternion.Euler(yRotation, xRotation, 0);
+        orientation.Rotate(Vector3.up * mouseX);
 
     }
 }
