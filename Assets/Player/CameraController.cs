@@ -18,6 +18,7 @@ public class CameraController : NetworkBehaviour
 
     public void Update()
     {
+		// check scene
         cameraHolder.transform.position = transform.position + offset;
     }
 }
