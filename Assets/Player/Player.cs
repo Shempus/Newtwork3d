@@ -1,5 +1,6 @@
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 public class Player : NetworkBehaviour
@@ -8,6 +9,9 @@ public class Player : NetworkBehaviour
 
     [SerializeField]
     private float speed = 30f;
+    
+    [SerializeField]
+    Transform orientation;
 
     bool canJump = true;
     
@@ -24,7 +28,7 @@ public class Player : NetworkBehaviour
         if (context.performed && canJump)
         {
             canJump = false;
-            moveServerRPC(Vector3.up * 5f, ForceMode.Impulse);
+            jumpServerRPC(Vector3.up * 5f, ForceMode.Impulse);
         }
     }
 
@@ -34,7 +38,7 @@ public class Player : NetworkBehaviour
 
         if (context.performed)
         {
-            moveServerRPC(context.ReadValue<Vector3>() * speed, ForceMode.Impulse);
+            moveServerRPC(context.ReadValue<Vector3>());
         }
     }
 
@@ -47,8 +51,15 @@ public class Player : NetworkBehaviour
     }
 
     [ServerRpc]
-    void moveServerRPC(Vector3 force, ForceMode mode)
+    void jumpServerRPC(Vector3 force, ForceMode mode)
     {
         rbPlayer.AddForce(force, mode);
+    }
+
+    [ServerRpc]
+    void moveServerRPC(Vector3 vect)
+    {
+
+        rbPlayer.AddForce(orientation.rotation * vect * speed, ForceMode.Force);
     }
 }
