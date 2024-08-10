@@ -4,6 +4,13 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
+
+/*
+ *
+ * Handles the input for the player
+ * 
+ */
+
 public class Player : NetworkBehaviour
 {
     private Rigidbody rbPlayer;
@@ -31,9 +38,10 @@ public class Player : NetworkBehaviour
     float xRotation = 0.0f;
 
 
-	public int playerNumber;
 
-
+	/*
+	 * Initialises the player, assigns a unique 'name'
+	 */
 	private void Awake()
     {
         rbPlayer = GetComponent<Rigidbody>();
@@ -42,7 +50,11 @@ public class Player : NetworkBehaviour
 		
     }
 
-    public void Jump(InputAction.CallbackContext context)
+	/*
+	 * Actual movement happens on the server, this checks if we are the 'owner' i.e. this is inut happened
+	 * on the computer that owns this instance of the player, if so and we are on the grounfd (canJump) calls the server to perform
+	 */
+	public void Jump(InputAction.CallbackContext context)
     {
         if(!IsOwner) return;
 
@@ -53,6 +65,9 @@ public class Player : NetworkBehaviour
         }
     }
 
+	/*
+	 *  As per jump, calls the server if this is the correct instance
+	 */
     public void Move(InputAction.CallbackContext context) 
     {
         if (!IsOwner) return;
@@ -63,6 +78,11 @@ public class Player : NetworkBehaviour
         }
     }
 
+	/*
+	 * The mpuse handling for the camera and player are separate here, this needs more extensive testing but if the player 
+	 * was more complex that a capsule I beleive the other players would need to see the rotation as well so would have to be done on the
+	 * server
+	 */
     public void Look(InputAction.CallbackContext context)
 	{
 		rbPlayer.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
@@ -86,6 +106,20 @@ public class Player : NetworkBehaviour
         }
     }
 
+	/*
+	 *  Using physics based control, which may have been a misake but I was thinking of puzzle games like portal/portal 2 where we would have traps
+	 *  and possibly coop physics based puzzles
+	 *  
+	 *  This gave a few problems like weird rotation when hitting walls
+	 *  
+	 *  This function handles the fact we are on the ground so can jump
+	 *  
+	 *  Have hit a wall so don't rotate weirdly
+	 *  
+	 *  Hit the finish sphere
+	 *  
+	 *  Finish has to call the server to handle showing new scenes over the network
+	 */
     private void OnTriggerEnter(Collider other)
     {
 

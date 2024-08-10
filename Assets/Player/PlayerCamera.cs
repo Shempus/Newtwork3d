@@ -1,7 +1,11 @@
 using Unity.Netcode;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+
+/*
+ * 
+ * Handles mouse movement for the camera only, not the player
+ * 
+ */
 
 public class PlayerCamera : NetworkBehaviour
 {

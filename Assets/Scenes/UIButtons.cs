@@ -3,6 +3,13 @@ using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.UI;
 
+
+/*
+ * 
+ * Handles the network buttons, host, server, client
+ * 
+ */
+
 public class UIButtons : MonoBehaviour
 {
     [SerializeField] private Button HostBtn;
