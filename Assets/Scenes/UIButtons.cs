@@ -13,8 +13,24 @@ public class UIButtons : MonoBehaviour
 
     private void Awake()
     {
-        HostBtn.onClick.AddListener(() => { NetworkManager.Singleton.StartHost(); });
-        ServerBtn.onClick.AddListener(() => { NetworkManager.Singleton.StartServer(); });
-        ClientBtn.onClick.AddListener(() => { NetworkManager.Singleton.StartClient(); });
+        HostBtn.onClick.AddListener(() => { 
+			NetworkManager.Singleton.StartHost();
+			HideButtons();
+		});
+        ServerBtn.onClick.AddListener(() => { 
+			NetworkManager.Singleton.StartServer();
+			HideButtons();
+		});
+        ClientBtn.onClick.AddListener(() => { 
+			NetworkManager.Singleton.StartClient();
+			HideButtons();
+		});
     }
+
+	private void HideButtons()
+	{
+		HostBtn.gameObject.SetActive(false);
+		ServerBtn.gameObject.SetActive(false);
+		ClientBtn.gameObject.SetActive(false);
+	}
 }
