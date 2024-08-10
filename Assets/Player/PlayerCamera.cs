@@ -44,10 +44,4 @@ public class PlayerCamera : NetworkBehaviour
 
     }
 
-    [ServerRpc]
-    public void RotatePlayerServerRPC(float mouseX)
-    {
-        // only the player needs to rotate on the server, not the camera
-        orientation.Rotate(Vector3.up * mouseX);
-    }
 }
