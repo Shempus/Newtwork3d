@@ -40,12 +40,12 @@ public class PlayerCamera : NetworkBehaviour
         yRotation = Mathf.Clamp(yRotation, -90f, 90f);
 
         transform.rotation = Quaternion.Euler(yRotation, xRotation, 0);
-        RotatePlayer(mouseX);
+        RotatePlayerServerRPC(mouseX);
 
     }
 
     [ServerRpc]
-    public void RotatePlayer(float mouseX)
+    public void RotatePlayerServerRPC(float mouseX)
     {
         // only the player needs to rotate on the server, not the camera
         orientation.Rotate(Vector3.up * mouseX);
