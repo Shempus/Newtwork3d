@@ -131,7 +131,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4775078492789236828}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3ba36f317b99996419e3c4f53ec5bb43, type: 3}
   m_Name: 
@@ -299,7 +299,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 1784645122
+  GlobalObjectIdHash: 2007358621
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
@@ -365,7 +365,19 @@ MonoBehaviour:
     m_ActionId: 6b5cf66f-291b-4947-9571-dc3b547f089b
     m_ActionName: PlayerActionMap/Move[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 870308154307875412}
+        m_TargetAssemblyTypeName: Player, Assembly-CSharp
+        m_MethodName: Look
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 06684e52-c4e5-44c9-b5bc-957b919b677f
     m_ActionName: PlayerActionMap/Look[/Mouse/delta]
   m_NeverAutoSwitchControlSchemes: 0
@@ -383,7 +395,7 @@ Rigidbody:
   serializedVersion: 4
   m_Mass: 1
   m_Drag: 0
-  m_AngularDrag: 0.05
+  m_AngularDrag: 20
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -412,8 +424,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3df4a05b9c8eeae4a961820542fd5a68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 600
-  orientation: {fileID: 3382776236803208648}
+  speed: 15
+  orientation: {fileID: 8249612379050322670}
+  jumpHeight: 10
+  sensitivityX: 8
+  sensitivityY: 0.5
+  xClamp: 85
 --- !u!114 &4072091465182727568
 MonoBehaviour:
   m_ObjectHideFlags: 0

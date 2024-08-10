@@ -1,7 +1,9 @@
+using System.Threading;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using static UnityEngine.InputSystem.Controls.AxisControl;
 
 public class Player : NetworkBehaviour
 {
@@ -13,8 +15,23 @@ public class Player : NetworkBehaviour
     [SerializeField]
     Transform orientation;
 
+    [SerializeField]
+    float jumpHeight = 0.5f;
+
     bool canJump = true;
-    
+    [SerializeField]
+    float sensitivityX = 8.0f;
+
+    [SerializeField]
+    float sensitivityY = 0.5f;
+
+    [SerializeField]
+    float xClamp = 85.0f;
+
+    float mouseX, mouseY;
+    float xRotation = 0.0f;
+
+
 
     private void Awake()
     {
@@ -28,7 +45,7 @@ public class Player : NetworkBehaviour
         if (context.performed && canJump)
         {
             canJump = false;
-            jumpServerRPC(Vector3.up * 5f, ForceMode.Impulse);
+            JumpServerRPC(Vector3.up * jumpHeight, ForceMode.Impulse);
         }
     }
 
@@ -38,7 +55,30 @@ public class Player : NetworkBehaviour
 
         if (context.performed)
         {
-            moveServerRPC(context.ReadValue<Vector3>());
+            MoveServerRPC(context.ReadValue<Vector2>());
+        }
+    }
+
+    public void Look(InputAction.CallbackContext context)
+    {
+        Debug.Log("Player::Look");
+        if (!IsOwner) return;
+        if (context.performed)
+        {
+            Vector2 lookValue = context.ReadValue<Vector2>();
+
+            mouseX = lookValue.x * sensitivityX;
+            mouseY = lookValue.y * sensitivityY;
+
+            xRotation -= mouseY;
+            xRotation = Mathf.Clamp(xRotation, -xClamp, xClamp);
+
+            Vector3 target = transform.eulerAngles;
+            target.x = xRotation;
+            orientation.eulerAngles = target;
+
+            // using physics smooths out the animation - but need angular drag on the rigid body to stop it spinning.
+            RotateServerRPC(Vector3.up * mouseX);
         }
     }
 
@@ -51,15 +91,21 @@ public class Player : NetworkBehaviour
     }
 
     [ServerRpc]
-    void jumpServerRPC(Vector3 force, ForceMode mode)
+    void JumpServerRPC(Vector3 force, ForceMode mode)
     {
         rbPlayer.AddForce(force, mode);
     }
 
     [ServerRpc]
-    void moveServerRPC(Vector3 vect)
+    void MoveServerRPC(Vector2 vect)
     {
+        Vector3 horizontalVelocity = (transform.right * vect.x + transform.forward * vect.y) * speed;
+        rbPlayer.velocity = horizontalVelocity;
+    }
 
-        rbPlayer.AddForce(orientation.rotation * vect * speed, ForceMode.Force);
+    [ServerRpc]
+    void RotateServerRPC(Vector3 tourque)
+    {
+        rbPlayer.AddTorque(tourque);
     }
 }

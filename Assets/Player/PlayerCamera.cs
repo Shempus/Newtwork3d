@@ -40,7 +40,7 @@ public class PlayerCamera : NetworkBehaviour
         yRotation = Mathf.Clamp(yRotation, -90f, 90f);
 
         transform.rotation = Quaternion.Euler(yRotation, xRotation, 0);
-        RotatePlayerServerRPC(mouseX);
+       /// RotatePlayerServerRPC(mouseX);
 
     }
 
