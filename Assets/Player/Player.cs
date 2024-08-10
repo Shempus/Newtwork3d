@@ -1,9 +1,8 @@
-using System.Threading;
+
 using Unity.Netcode;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
-using static UnityEngine.InputSystem.Controls.AxisControl;
+using UnityEngine.SceneManagement;
 
 public class Player : NetworkBehaviour
 {
@@ -31,11 +30,15 @@ public class Player : NetworkBehaviour
     float mouseX, mouseY;
     float xRotation = 0.0f;
 
+	int playerNumber;
+
 
 
     private void Awake()
     {
         rbPlayer = GetComponent<Rigidbody>();
+		playerNumber = NetworkManager.ConnectedClientsList.Count;
+		Debug.Log("Player" + playerNumber + " connected");
     }
 
     public void Jump(InputAction.CallbackContext context)
@@ -60,8 +63,8 @@ public class Player : NetworkBehaviour
     }
 
     public void Look(InputAction.CallbackContext context)
-    {
-        Debug.Log("Player::Look");
+	{
+		rbPlayer.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
         if (!IsOwner) return;
         if (context.performed)
         {
@@ -84,11 +87,23 @@ public class Player : NetworkBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Ground"))
+
+		if (!IsOwner) return; 
+
+		if (other.gameObject.CompareTag("Ground"))
         {
             canJump = true;
-        }
-    }
+        } else
+		{
+			rbPlayer.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezeRotationY;
+
+		}
+
+		if (other.gameObject.CompareTag("Finish"))
+		{
+			SomeoneWonServerRPC(playerNumber);
+		}
+	}
 
     [ServerRpc]
     void JumpServerRPC(Vector3 force, ForceMode mode)
@@ -108,4 +123,10 @@ public class Player : NetworkBehaviour
     {
         rbPlayer.AddTorque(tourque);
     }
+
+	[ServerRpc]
+	void SomeoneWonServerRPC(int playerNumber)
+	{
+		NetworkManager.SceneManager.LoadScene("Win", LoadSceneMode.Single);
+	}
 }

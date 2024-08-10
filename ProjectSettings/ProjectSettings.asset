@@ -839,11 +839,11 @@ PlayerSettings:
   apiCompatibilityLevel: 6
   activeInputHandler: 2
   windowsGamepadBackendHint: 0
-  cloudProjectId: fe99e97e-87a7-4f30-84ca-285b9c939b91
+  cloudProjectId: 1f9debcf-ff71-4266-961a-ee7699f03c1a
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
   projectName: Network3d
-  organizationId: shempus
+  organizationId: melonbee
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
   hmiLoadingImage: {fileID: 0}
