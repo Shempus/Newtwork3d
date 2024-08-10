@@ -114,7 +114,7 @@ public class Player : NetworkBehaviour
 	 *  
 	 *  This function handles the fact we are on the ground so can jump
 	 *  
-	 *  Have hit a wall so don't rotate weirdly
+	 *  Have hit a wall so don't rotate weirdly - not perfect
 	 *  
 	 *  Hit the finish sphere
 	 *  
@@ -163,6 +163,7 @@ public class Player : NetworkBehaviour
 	void SomeoneWonServerRPC(string id)
 	{
 		Debug.Log("Player " + id + " won");
+		GameManager.winnerName = id;
 		NetworkManager.SceneManager.LoadScene("Win", LoadSceneMode.Single);
 	}
 }
