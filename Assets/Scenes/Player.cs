@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using Unity.Netcode;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -24,7 +21,7 @@ public class Player : NetworkBehaviour
 
         if (context.performed)
         {
-            rbPlayer.AddForce(Vector3.up * 5f, ForceMode.Impulse);
+            moveServerRPC(Vector3.up * 5f, ForceMode.Impulse);
         }
     }
 
@@ -34,7 +31,13 @@ public class Player : NetworkBehaviour
 
         if (context.performed)
         {
-            rbPlayer.AddForce(context.ReadValue<Vector3>() * 5f, ForceMode.Impulse);
+            moveServerRPC(context.ReadValue<Vector3>() * 5f, ForceMode.Impulse);
         }
+    }
+
+    [ServerRpc]
+    void moveServerRPC(Vector3 force, ForceMode mode)
+    {
+        rbPlayer.AddForce(force, mode);
     }
 }
