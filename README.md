@@ -13,3 +13,7 @@ Looking at cleaning up movement and camera, looking here https://mymasterdesigne
 Win/Lose Images generated at https://www.textstudio.com/
 
 Player HUD idea: https://discussions.unity.com/t/player-hud-only-visible-to-instantiated-player/909028/4
+
+Unique ids per player NetworkManager.LocalClientId always gives 0?
+
+NetworkManager count of connections can only be called on the server, so only works on the host, and SeverRPC functions cannot return values (must be void) so we know the transforms are unique per player so we will use transform.name to store a unique value. A UUID initially but should be the name chosen in a lobby.

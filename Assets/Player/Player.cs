@@ -30,15 +30,16 @@ public class Player : NetworkBehaviour
     float mouseX, mouseY;
     float xRotation = 0.0f;
 
-	int playerNumber;
+
+	public int playerNumber;
 
 
-
-    private void Awake()
+	private void Awake()
     {
         rbPlayer = GetComponent<Rigidbody>();
-		playerNumber = NetworkManager.ConnectedClientsList.Count;
-		Debug.Log("Player" + playerNumber + " connected");
+		transform.name = System.Guid.NewGuid().ToString();
+		Debug.Log("Player " + transform.name + " Connected");
+		
     }
 
     public void Jump(InputAction.CallbackContext context)
@@ -101,7 +102,7 @@ public class Player : NetworkBehaviour
 
 		if (other.gameObject.CompareTag("Finish"))
 		{
-			SomeoneWonServerRPC(playerNumber);
+			SomeoneWonServerRPC(transform.name);
 		}
 	}
 
@@ -125,8 +126,9 @@ public class Player : NetworkBehaviour
     }
 
 	[ServerRpc]
-	void SomeoneWonServerRPC(int playerNumber)
+	void SomeoneWonServerRPC(string id)
 	{
+		Debug.Log("Player " + id + " won");
 		NetworkManager.SceneManager.LoadScene("Win", LoadSceneMode.Single);
 	}
 }
